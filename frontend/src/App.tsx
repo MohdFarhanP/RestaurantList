@@ -1,10 +1,12 @@
 
 import './App.css'
+import Restaurant from './pages/Restaurant'
 
 function App() {
 
   return (
     <>
+    <Restaurant/>
     </>
   )
 }

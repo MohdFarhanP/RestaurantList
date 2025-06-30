@@ -14,7 +14,7 @@ export class CreateRestaurantController{
                 address: req.body.address,
                 email: req.body.email
             });
-            res.status(201).json({data:response});
+            res.status(201).json(response);
         
         } catch (error) {
             if (error instanceof Error) {

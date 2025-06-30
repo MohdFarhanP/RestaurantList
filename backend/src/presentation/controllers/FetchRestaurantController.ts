@@ -9,7 +9,7 @@ export class FetchRestaurantController{
         try {
           
             const restaurants = await this.useCase.execute();
-            res.status(200).json({data:restaurants});
+            res.status(200).json(restaurants);
         
         } catch (error) {
             if (error instanceof Error) {

@@ -11,7 +11,7 @@ export class UpdateRestaurantController {
             const {name,contact,address,email} = req.body;
             
             const updatedRestaurant = await this.useCase.execute({id,name,contact,address,email});
-            res.status(200).json({data:updatedRestaurant});
+            res.status(200).json(updatedRestaurant);
         } catch (error) {
             if (error instanceof Error) {
                 console.error(error.stack);
