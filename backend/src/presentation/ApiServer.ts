@@ -5,6 +5,8 @@ import { UpdateRestaurantController } from './controllers/UpdateRestaurantContro
 import { DeleteRestaurantController } from './controllers/DeleteRestaurantController';
 import { restaurantRouter } from './routes/restaurantRoutes';
 import cors from 'cors';
+import dotenv from 'dotenv'
+dotenv.config();
 
 export class ApiServer{
     public static async run(port:number,createRestaurantController:CreateRestaurantController,fetchRestaurantController:FetchRestaurantController,updateRestaurantController:UpdateRestaurantController,deleteRestaurantController:DeleteRestaurantController):Promise<void>{
@@ -12,7 +14,7 @@ export class ApiServer{
         const app = express();
 
         app.use(cors({
-            origin: ['http://localhost:5173'],
+            origin: [process.env.FRONTENT_URL!],
             credentials: true
         }));
         app.use(express.json());
