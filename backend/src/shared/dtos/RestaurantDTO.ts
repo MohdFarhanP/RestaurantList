@@ -1,4 +1,4 @@
-import { RestaurantEntity } from "../domain/RestaurantEntity";
+import { RestaurantEntity } from "../../domain/RestaurantEntity";
 
 
 export class RestaurantDTO {
