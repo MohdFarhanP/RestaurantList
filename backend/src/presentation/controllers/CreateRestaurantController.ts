@@ -19,7 +19,7 @@ export class CreateRestaurantController{
         } catch (error) {
             if (error instanceof Error) {
                 console.error(error.stack);
-                res.send(500).json({msg:error.message})
+                res.status(500).json({msg:error.message})
                 throw new Error(error.message);
             } else {
                 throw new Error('An unknown error occurred');

@@ -12,9 +12,9 @@ export class ApiServer{
     public static async run(port:number,createRestaurantController:CreateRestaurantController,fetchRestaurantController:FetchRestaurantController,updateRestaurantController:UpdateRestaurantController,deleteRestaurantController:DeleteRestaurantController):Promise<void>{
 
         const app = express();
-
+        console.log("Allowed CORS origin:", process.env.FRONTEND_URL);
         app.use(cors({
-            origin: [process.env.FRONTENT_URL!],
+            origin: process.env.FRONTENT_URL!,
             credentials: true
         }));
         app.use(express.json());
