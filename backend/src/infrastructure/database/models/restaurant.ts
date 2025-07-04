@@ -4,8 +4,14 @@ interface RestaurantAttributes {
   id: number;
   name: string;
   contact: string;
-  address: string;
   email: string;
+  street: string;
+  landmark: string;
+  area: string;
+  city: string;
+  state: string;
+  pincode: string;
+  country: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -17,8 +23,14 @@ export class Restaurant extends Model<RestaurantAttributes, RestaurantCreationAt
   public id!: number;
   public name!: string;
   public contact!: string;
-  public address!: string;
   public email!: string;
+  public street!: string;
+  public landmark!: string;
+  public area!: string;
+  public city!: string;
+  public state!: string;
+  public pincode!: string;
+  public country!: string;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -34,8 +46,14 @@ export function initRestaurantModel(sequelize: Sequelize) {
       },
       name: DataTypes.STRING,
       contact: DataTypes.STRING,
-      address: DataTypes.STRING,
       email: DataTypes.STRING,
+      street: DataTypes.STRING,
+      landmark: DataTypes.STRING,
+      area: DataTypes.STRING,
+      city: DataTypes.STRING,
+      state: DataTypes.STRING,
+      pincode: DataTypes.STRING,
+      country: DataTypes.STRING,
     },
     {
       sequelize,
