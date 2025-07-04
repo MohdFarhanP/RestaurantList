@@ -3,9 +3,15 @@ import axios from "axios";
 interface Restaurant {
   id?: string;
   name: string;
-  address: string;
   contact: string;
   email: string;
+  street: string;
+  landmark: string;
+  area: string;
+  city: string;
+  state: string;
+  pincode: string;
+  country: string;
 }
 
 const AXIOS_BASE_URL = import.meta.env.VITE_AXIOS_BASEURL;
