@@ -11,7 +11,7 @@ import {
 import Navbar from "../components/Navbar";
 import ErrorMessages from "../components/ErrorMessages";
 import RestaurantCard from "../components/RestaurantCard";
-import { Pagination } from "@mui/material";
+import Pagination from "../components/Pagination";
 
 export interface RestaurantData {
   id?: string;
@@ -25,7 +25,7 @@ export interface RestaurantData {
   state: string;
   pincode: string;
   country: string;
-  images:string[];
+  images: string[];
 }
 
 const Restaurant = () => {
@@ -36,6 +36,9 @@ const Restaurant = () => {
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [editData, setEditData] = useState<RestaurantData | null>(null);
 
+  const [page, setPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState(1);
+
   const [openDeleteDialog, setOpenDeleteDialog] = useState<boolean>(false);
   const [selectedRestaurant, setSelectedRestaurant] =
     useState<RestaurantData | null>(null);
@@ -43,8 +46,9 @@ const Restaurant = () => {
   const getRestaurants = async (): Promise<void> => {
     try {
       setLoading(true);
-      const data: RestaurantData[] = await fetchRestaurants();
+      const { data, totalPage } = await fetchRestaurants(page);
       setRestaurants(data);
+      setTotalPages(totalPage);
       setError(null);
     } catch (err) {
       console.error("Failed to fetch restaurants:", err);
@@ -56,7 +60,7 @@ const Restaurant = () => {
 
   useEffect(() => {
     getRestaurants();
-  }, []);
+  }, [page]);
 
   const handleAddClick = () => {
     setEditData(null);
@@ -158,8 +162,7 @@ const Restaurant = () => {
         handleConfirm={handleConfirmDelete}
         restaurantName={selectedRestaurant?.name || ""}
       />
-
-      <Pagination/>
+      <Pagination page={page} totalPages={totalPages} setPage={setPage}/>
     </div>
   );
 };

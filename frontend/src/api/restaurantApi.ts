@@ -1,5 +1,9 @@
 import axios from "axios";
 
+interface FetchRestaurantResult{
+  data:Restaurant[];
+  totalPage:number
+}
 interface Restaurant {
   id?: string;
   name: string;
@@ -18,9 +22,9 @@ interface Restaurant {
 const AXIOS_BASE_URL = import.meta.env.VITE_AXIOS_BASEURL;
 
 
-export const fetchRestaurants = async (): Promise<Restaurant[]> => {
+export const fetchRestaurants = async (page:number,limit = 4): Promise<FetchRestaurantResult> => {
   try {
-    const response = await axios.get<Restaurant[]>(`${AXIOS_BASE_URL}/restaurant`);
+    const response = await axios.get<FetchRestaurantResult>(`${AXIOS_BASE_URL}/restaurant?page=${page}&limit=${limit}`);
     console.log('response',response)
     return response.data;
   } catch (error) {

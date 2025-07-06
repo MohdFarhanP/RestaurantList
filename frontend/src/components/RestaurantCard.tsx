@@ -56,13 +56,13 @@ const RestaurantCard = ({
       <div className="flex justify-end gap-2 px-4 pb-4">
         <button
           onClick={() => onEdit(restaurant)}
-          className="text-blue-500 hover:text-blue-700"
+          className=""
         >
           <EditIcon />
         </button>
         <button
           onClick={() => onDelete(restaurant)}
-          className="text-red-500 hover:text-red-700"
+          className="text-red-600 hover:text-red-700"
         >
           <DeleteIcon />
         </button>

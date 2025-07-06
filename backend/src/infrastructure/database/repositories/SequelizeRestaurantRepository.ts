@@ -1,4 +1,4 @@
-import { IRepository } from "../../../domain/IRepository";
+import { FetchByLimitResult, IRepository } from "../../../domain/IRepository";
 import { UpdateRestaurantInput } from "../../../application/restaurantUseCase/UpdateRestaurantUseCase";
 import { RestaurantEntity } from "../../../domain/RestaurantEntity";
 import { Restaurant } from "../models/restaurant";
@@ -39,12 +39,15 @@ export class SequelizeRestaurantRepository implements IRepository{
         }
     }
 
-    public async fetchAll(): Promise<RestaurantEntity[]> {
+    public async fetchByLimit(page:number,limit:number): Promise<FetchByLimitResult> {
         try {
-       
-            const restaurants = await this.model.findAll();
-            return restaurants.map((res)=> new RestaurantEntity(res.dataValues.name,res.dataValues.contact,res.dataValues.email,res.dataValues.street,res.dataValues.landmark,res.dataValues.area,res.dataValues.city,res.dataValues.state,res.dataValues.pincode,res.dataValues.country,res.images,res.dataValues.id)); 
-       
+            const offset = (page - 1)*limit;
+            const {count,rows} = await this.model.findAndCountAll({
+                offset,
+                limit
+            });
+            const data = rows.map((res)=> new RestaurantEntity(res.dataValues.name,res.dataValues.contact,res.dataValues.email,res.dataValues.street,res.dataValues.landmark,res.dataValues.area,res.dataValues.city,res.dataValues.state,res.dataValues.pincode,res.dataValues.country,res.images,res.dataValues.id)); 
+            return {data,total:count}
         } catch (error) {
             if (error instanceof Error) {
                 console.error(error.stack);

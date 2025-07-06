@@ -2,11 +2,12 @@ import { useState, useEffect } from "react";
 import ImageUploadeSection from "./ImageUploadeSection";
 import RestaurantFormField from "./RestaurantFormField";
 import { uploadToCloudinary } from "../utils/uploadToCloudinary";
+import { FormValidate } from "../utils/FormValidate";
 
 
 export type UploadStatus = 'idle' | 'uploading' | 'changing';
 
-interface Restaurant {
+export interface Restaurant {
   id?: string;
   name: string;
   contact: string;
@@ -83,18 +84,6 @@ const AddEditRestaurantDialog = ({
     setFormErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
-  const validate = () => {
-    const errors: Partial<Record<keyof Restaurant, string>> = {};
-
-    if (!formData.name.trim()) errors.name = "Name is required";
-    if (!formData.contact.trim()) errors.contact = "Contact is required";
-    if (!formData.email.trim()) errors.email = "Email is required";
-    if (!formData.street.trim()) errors.street = "Street is required";
-    if (!formData.city.trim()) errors.city = "City is required";
-
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
 
   const handleDelete = (index: number) => {
     setFormData((prev) => ({
@@ -147,7 +136,7 @@ const AddEditRestaurantDialog = ({
   };
 
   const onSubmit = () => {
-    if (!validate()) return;
+    if (!FormValidate({formData,setFormErrors})) return;
     handleSubmit(formData);
     handleClose();
   };
@@ -174,6 +163,9 @@ const AddEditRestaurantDialog = ({
           onReplace={handleReplaceImage}
           onDelete={handleDelete}
         />
+        {formErrors.images && (
+          <p className="text-red-500 text-sm text-center">{formErrors.images}</p>
+        )}
 
         {/* Footer Actions (btn) */}
         <div className="mt-6 flex justify-end gap-3">

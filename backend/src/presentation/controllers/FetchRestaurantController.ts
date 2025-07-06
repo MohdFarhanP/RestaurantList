@@ -7,9 +7,10 @@ export class FetchRestaurantController{
     }
     public async handler(req:Request,res:Response):Promise<void>{
         try {
-          
-            const restaurants = await this.useCase.execute();
-            res.status(200).json(restaurants);
+            const page = Number(req.query.page);
+            const limit = Number(req.query.limit);
+            const {data,totalPage} = await this.useCase.execute({page,limit});
+            res.status(200).json({data,totalPage});
         
         } catch (error) {
             if (error instanceof Error) {
