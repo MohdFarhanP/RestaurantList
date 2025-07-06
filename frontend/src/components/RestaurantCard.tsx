@@ -21,20 +21,24 @@ const RestaurantCard = ({
   return (
     <div
       key={restaurant.id}
-      className="bg-white rounded-md shadow-md transition hover:shadow-lg hover:scale-[1.01] duration-200 w-full max-w-xs mx-auto flex flex-col"
+      className="bg-white rounded-md shadow-md mt-25 sm:mt-8 transition hover:shadow-lg hover:scale-[1.01] duration-200 w-full max-w-xs mx-auto flex flex-col"
     >
-      {/* Card Header */}
-      <div className="h-40 w-full overflow-hidden rounded-t-md">
-        <img
-          className="w-full h-full object-cover"
-          src="https://i.pinimg.com/736x/63/c1/f3/63c1f38307b961d147e211e7ebacfdd0.jpg"
-          alt={restaurant.name}
-        />
+      {/* Card Header " w-full  rounded-t-md"*/}
+      <div className="carousel rounded-box h-40 w-full overflow-x-auto">
+        {restaurant.images.map((img)=>
+        <div className="carousel-item">
+          <img
+            src={img}
+            className="rounded-box"
+          />
+        </div>
+        )}
       </div>
 
       {/* Card Content */}
       <div className="p-4 flex-1 text-gray-800 text-sm">
-        <h2 className="text-lg font-semibold mb-1">{restaurant.name}</h2>
+        <h2 className="text-lg font-semibold">{restaurant.name}</h2>
+        <div className="divider"></div>
         <div>
           <span className="text-xs font-medium">Address:</span>{" "}
           {formatAddress(restaurant)}
@@ -44,8 +48,7 @@ const RestaurantCard = ({
           {restaurant.contact}
         </div>
         <div>
-          <span className="text-xs font-medium">Email:</span>{" "}
-          {restaurant.email}
+          <span className="text-xs font-medium">Email:</span> {restaurant.email}
         </div>
       </div>
 

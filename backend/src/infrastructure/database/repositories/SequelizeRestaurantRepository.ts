@@ -23,10 +23,11 @@ export class SequelizeRestaurantRepository implements IRepository{
                 city:data.city,
                 state:data.state,
                 pincode:data.pincode,
-                country:data.country
+                country:data.country,
+                images:data.images
             });
             if (!result) throw new Error("Create failed");
-            return new RestaurantEntity(result.name,result.contact,result.email,result.street,result.landmark,result.area,result.city,result.state,result.pincode,result.country,result.id);
+            return new RestaurantEntity(result.name,result.contact,result.email,result.street,result.landmark,result.area,result.city,result.state,result.pincode,result.country,result.images,result.id);
        
         } catch (error) {
             if (error instanceof Error) {
@@ -42,7 +43,7 @@ export class SequelizeRestaurantRepository implements IRepository{
         try {
        
             const restaurants = await this.model.findAll();
-            return restaurants.map((res)=> new RestaurantEntity(res.dataValues.name,res.dataValues.contact,res.dataValues.email,res.dataValues.street,res.dataValues.landmark,res.dataValues.area,res.dataValues.city,res.dataValues.state,res.dataValues.pincode,res.dataValues.country,res.dataValues.id)); 
+            return restaurants.map((res)=> new RestaurantEntity(res.dataValues.name,res.dataValues.contact,res.dataValues.email,res.dataValues.street,res.dataValues.landmark,res.dataValues.area,res.dataValues.city,res.dataValues.state,res.dataValues.pincode,res.dataValues.country,res.images,res.dataValues.id)); 
        
         } catch (error) {
             if (error instanceof Error) {
@@ -69,7 +70,7 @@ export class SequelizeRestaurantRepository implements IRepository{
 
             if(!updatedRestaurant) throw new Error('update failed recored not found after update');
 
-            return new RestaurantEntity(updatedRestaurant.name,updatedRestaurant.contact,updatedRestaurant.email,updatedRestaurant.street,updatedRestaurant.landmark,updatedRestaurant.area,updatedRestaurant.city,updatedRestaurant.state,updatedRestaurant.pincode,updatedRestaurant.country,updatedRestaurant.id);
+            return new RestaurantEntity(updatedRestaurant.name,updatedRestaurant.contact,updatedRestaurant.email,updatedRestaurant.street,updatedRestaurant.landmark,updatedRestaurant.area,updatedRestaurant.city,updatedRestaurant.state,updatedRestaurant.pincode,updatedRestaurant.country,updatedRestaurant.images,updatedRestaurant.id);
         } catch (error) {
              if (error instanceof Error) {
                 console.error(error.stack);

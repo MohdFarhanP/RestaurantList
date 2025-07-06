@@ -12,6 +12,7 @@ interface RestaurantAttributes {
   state: string;
   pincode: string;
   country: string;
+  images:string[]
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -31,6 +32,7 @@ export class Restaurant extends Model<RestaurantAttributes, RestaurantCreationAt
   public state!: string;
   public pincode!: string;
   public country!: string;
+  public images!: string[];
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -54,6 +56,7 @@ export function initRestaurantModel(sequelize: Sequelize) {
       state: DataTypes.STRING,
       pincode: DataTypes.STRING,
       country: DataTypes.STRING,
+      images: DataTypes.ARRAY(DataTypes.STRING),
     },
     {
       sequelize,

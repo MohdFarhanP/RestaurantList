@@ -9,7 +9,7 @@ export class FetchRestaurantUseCase implements IUseCase<void,RestaurantDTO[]>{
     }
     public async execute(): Promise<RestaurantEntity[]> {
         const restaurants = await this.restaurantRepo.fetchAll();
-        return restaurants.map((res)=>new RestaurantDTO(res.id,res.name,res.contact,res.email,res.street,res.landmark,res.area,res.city,res.state,res.pincode,res.country));
+        return restaurants.map((res)=>new RestaurantDTO(res.id,res.name,res.contact,res.email,res.street,res.landmark,res.area,res.city,res.state,res.pincode,res.country,res.images));
     }
     
 }

@@ -14,6 +14,7 @@ export interface RestaurantInput{
   state: string;
   pincode: string;
   country: string;
+  images:string[];
 }
 
 export class CreateRestaurantUseCase implements IUseCase<RestaurantInput,RestaurantDTO>{
@@ -22,7 +23,7 @@ export class CreateRestaurantUseCase implements IUseCase<RestaurantInput,Restaur
 
     }
     public async execute(data: RestaurantInput):Promise<RestaurantDTO >{
-        const restaurant = new RestaurantEntity(data.name,data.contact,data.email,data.street,data.landmark,data.area,data.city,data.state,data.pincode,data.country);
+        const restaurant = new RestaurantEntity(data.name,data.contact,data.email,data.street,data.landmark,data.area,data.city,data.state,data.pincode,data.country,data.images);
         const newRestaurant = await this.restaurantRepo.save(restaurant);
         return RestaurantDTO.from(newRestaurant);
     }

@@ -11,6 +11,7 @@ import {
 import Navbar from "../components/Navbar";
 import ErrorMessages from "../components/ErrorMessages";
 import RestaurantCard from "../components/RestaurantCard";
+import { Pagination } from "@mui/material";
 
 export interface RestaurantData {
   id?: string;
@@ -24,6 +25,7 @@ export interface RestaurantData {
   state: string;
   pincode: string;
   country: string;
+  images:string[];
 }
 
 const Restaurant = () => {
@@ -133,6 +135,7 @@ const Restaurant = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-6 mt-20">
         {restaurants.map((restaurant) => (
           <RestaurantCard
+            key={restaurant.id}
             restaurant={restaurant}
             onDelete={handleDeleteClick}
             onEdit={handleEditClick}
@@ -155,6 +158,8 @@ const Restaurant = () => {
         handleConfirm={handleConfirmDelete}
         restaurantName={selectedRestaurant?.name || ""}
       />
+
+      <Pagination/>
     </div>
   );
 };

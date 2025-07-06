@@ -8,9 +8,9 @@ export class UpdateRestaurantController {
     public async handler(req:Request,res:Response):Promise<void>{
         try {
             const id = Number(req.params.id); 
-            const {name,contact,address,email} = req.body;
+            const {name,contact,email,street,landmark,area,city,state,pincode,country,images} = req.body;
             
-            const updatedRestaurant = await this.useCase.execute({id,name,contact,address,email});
+            const updatedRestaurant = await this.useCase.execute({id,name,contact,email,street,landmark,area,city,state,pincode,country,images});
             res.status(200).json(updatedRestaurant);
         } catch (error) {
             if (error instanceof Error) {

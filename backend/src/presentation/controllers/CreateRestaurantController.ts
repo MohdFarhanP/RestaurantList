@@ -11,8 +11,15 @@ export class CreateRestaurantController{
             const response = await this.useCase.execute({
                 name: req.body.name,
                 contact: req.body.contact,
-                address: req.body.address,
-                email: req.body.email
+                email: req.body.email,
+                street: req.body.street,
+                landmark: req.body.landmark,
+                area: req.body.area,
+                city: req.body.city,
+                state: req.body.state,
+                pincode: req.body.pincode,
+                country:req.body.country,
+                images:req.body.images
             });
             res.status(201).json(response);
         

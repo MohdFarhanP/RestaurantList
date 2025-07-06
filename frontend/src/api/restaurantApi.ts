@@ -12,6 +12,7 @@ interface Restaurant {
   state: string;
   pincode: string;
   country: string;
+  images:string[];
 }
 
 const AXIOS_BASE_URL = import.meta.env.VITE_AXIOS_BASEURL;

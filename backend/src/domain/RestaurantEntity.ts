@@ -10,5 +10,6 @@ export class RestaurantEntity {
         public readonly state: string,
         public readonly pincode: string,
         public readonly country: string,
+        public readonly images: string[],
         public readonly id: number = 123){ }
 }
