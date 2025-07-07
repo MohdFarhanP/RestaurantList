@@ -6,9 +6,11 @@ import { DeleteRestaurantController } from './controllers/DeleteRestaurantContro
 import { restaurantRouter } from './routes/restaurantRoutes';
 import cors from 'cors';
 import dotenv from 'dotenv'
+import { SearchRestaurantController } from './controllers/SearchRestaurantController';
 dotenv.config();
 export class ApiServer{
-    public static async run(port:number,createRestaurantController:CreateRestaurantController,fetchRestaurantController:FetchRestaurantController,updateRestaurantController:UpdateRestaurantController,deleteRestaurantController:DeleteRestaurantController):Promise<void>{
+
+    public static async run(port:number,createRestaurantController:CreateRestaurantController,fetchRestaurantController:FetchRestaurantController,updateRestaurantController:UpdateRestaurantController,deleteRestaurantController:DeleteRestaurantController,searchRestaurantController:SearchRestaurantController):Promise<void>{
 
         const app = express();
         console.log("Allowed CORS origin:", process.env.FRONTEND_URL);
@@ -18,7 +20,7 @@ export class ApiServer{
         }));
         app.use(express.json());
 
-        app.use('/restaurant',restaurantRouter(createRestaurantController,fetchRestaurantController,updateRestaurantController,deleteRestaurantController));
+        app.use('/restaurant',restaurantRouter(createRestaurantController,fetchRestaurantController,updateRestaurantController,deleteRestaurantController,searchRestaurantController));
 
         app.listen(port,()=>{
             console.log('server is running');

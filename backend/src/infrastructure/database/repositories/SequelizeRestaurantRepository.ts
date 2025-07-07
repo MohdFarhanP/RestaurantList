@@ -110,4 +110,21 @@ export class SequelizeRestaurantRepository implements IRepository {
         }
     }
 
+    public async search(searchQuary: string): Promise<RestaurantEntity[]> {
+        try {
+            const restaurants = await this.model.findAll({
+                where: { name:{[Op.iLike]:`%${searchQuary}%`} }
+            });
+
+            return restaurants.map((res) => new RestaurantEntity(res.name, res.contact, res.email, res.street, res.landmark, res.area, res.city, res.state, res.pincode, res.country, res.images, res.id));
+        } catch (error) {
+            if (error instanceof Error) {
+                console.error(error.stack);
+                throw new Error(error.message);
+            } else {
+                throw new Error('An unknown error occurred');
+            }
+        }
+    }
+
 }

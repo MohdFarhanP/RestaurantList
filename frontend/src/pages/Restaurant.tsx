@@ -6,6 +6,7 @@ import {
   addRestaurant,
   deleteRestaurant,
   fetchRestaurants,
+  searchRestaurant,
   updateRestaurant,
 } from "../api/restaurantApi";
 import Navbar from "../components/Navbar";
@@ -13,6 +14,9 @@ import ErrorMessages from "../components/ErrorMessages";
 import RestaurantCard from "../components/RestaurantCard";
 import Pagination from "../components/Pagination";
 import { ToastContainer } from "react-toastify";
+
+
+
 
 export interface RestaurantData {
   id?: string;
@@ -29,6 +33,9 @@ export interface RestaurantData {
   images: string[];
 }
 
+
+
+
 const Restaurant = () => {
   const [restaurants, setRestaurants] = useState<RestaurantData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -41,8 +48,9 @@ const Restaurant = () => {
   const [totalPages, setTotalPages] = useState(1);
 
   const [openDeleteDialog, setOpenDeleteDialog] = useState<boolean>(false);
-  const [selectedRestaurant, setSelectedRestaurant] =
-    useState<RestaurantData | null>(null);
+  const [selectedRestaurant, setSelectedRestaurant] = useState<RestaurantData | null>(null);
+
+
 
   const getRestaurants = async (): Promise<void> => {
     try {
@@ -100,6 +108,24 @@ const Restaurant = () => {
     }
   };
 
+  const handleSearch = async(searchQuary:string):Promise<void>=>{
+    if(searchQuary === ''){
+      setPage(1)
+      await getRestaurants();
+      return;
+    }
+    try {
+      setLoading(true)
+      const restaurants = await searchRestaurant(searchQuary);
+      setRestaurants(restaurants);      
+      setTotalPages(1);
+    } catch (error) {
+      setError(`Failed to search restaurants: ${error}`);
+    } finally{
+      setLoading(false);
+    }
+  };
+
   const handleConfirmDelete = async () => {
     try {
       if (selectedRestaurant?.id) {
@@ -117,7 +143,7 @@ const Restaurant = () => {
 
   return (
     <div className="relative max-w-7xl  mx-auto px-4 py-6">
-      <Navbar onAddClick={handleAddClick} />
+      <Navbar onAddClick={handleAddClick} onSearch={handleSearch} />
       {/* Loading Spinner */}
       {loading && (
         <div className="flex justify-center">

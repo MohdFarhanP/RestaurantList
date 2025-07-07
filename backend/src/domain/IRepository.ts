@@ -12,4 +12,5 @@ export interface IRepository {
     fetchByLimit(page:number,limit:number):Promise<FetchByLimitResult>;
     update(restaurant: UpdateRestaurantInput):Promise<RestaurantEntity>;
     delete(id:number):Promise<boolean>
+    search(searchQurary:string):Promise<RestaurantEntity[]>
 }

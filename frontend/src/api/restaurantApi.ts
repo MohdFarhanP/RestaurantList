@@ -25,9 +25,26 @@ const AXIOS_BASE_URL = import.meta.env.VITE_AXIOS_BASE_URL;
 
 export const fetchRestaurants = async (page:number,limit = 4): Promise<FetchRestaurantResult> => {
   try {
-    const response = await axios.get<FetchRestaurantResult>(`${AXIOS_BASE_URL}/restaurant?page=${page}&limit=${limit}`);
+    const response = await axios.get<FetchRestaurantResult>(`${AXIOS_BASE_URL}/restaurant/fetchRestaurant?page=${page}&limit=${limit}`);
     console.log('response',response)
     return response.data;
+  } catch (error) {
+if (error instanceof AxiosError) {
+      const message = error.response?.data?.msg || error.response?.data?.message || error.message;
+      console.log(message)
+      toast.error(message)
+      throw new Error(message);
+    } else {
+      toast.error('An unknown error occurred');
+      throw new Error('An unknown error occurred');
+    }
+  }
+};
+export const searchRestaurant = async (searchQuary:string): Promise<Restaurant[]> => {
+  try {
+    const response = await axios.get<{data:Restaurant[]}>(`${AXIOS_BASE_URL}/restaurant?search=${searchQuary}`);
+    console.log('response',response)
+    return response.data.data;
   } catch (error) {
 if (error instanceof AxiosError) {
       const message = error.response?.data?.msg || error.response?.data?.message || error.message;
@@ -44,7 +61,7 @@ if (error instanceof AxiosError) {
 
 export const addRestaurant = async (restaurant: Omit<Restaurant, 'id'>): Promise<Restaurant> => {
   try {
-    const response = await axios.post<Restaurant>(`${AXIOS_BASE_URL}/restaurant`, restaurant);
+    const response = await axios.post<Restaurant>(`${AXIOS_BASE_URL}/restaurant/addRestaurant`, restaurant);
     return response.data;
   } catch (error) {
 if (error instanceof AxiosError) {
@@ -62,7 +79,7 @@ if (error instanceof AxiosError) {
 
 export const updateRestaurant = async (restaurant: Restaurant): Promise<Restaurant> => {
   try {
-    const response = await axios.put<Restaurant>(`${AXIOS_BASE_URL}/restaurant/${restaurant.id}`, restaurant);
+    const response = await axios.put<Restaurant>(`${AXIOS_BASE_URL}/restaurant/updateRestaurant/${restaurant.id}`, restaurant);
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -80,7 +97,7 @@ export const updateRestaurant = async (restaurant: Restaurant): Promise<Restaura
 
 export const deleteRestaurant = async (id: string): Promise<void> => {
   try {
-    await axios.delete<void>(`${AXIOS_BASE_URL}/restaurant/${id}`);
+    await axios.delete<void>(`${AXIOS_BASE_URL}/restaurant/deleteRestaurant/${id}`);
     return;
   } catch (error) {
 if (error instanceof AxiosError) {

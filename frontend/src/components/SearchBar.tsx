@@ -1,12 +1,14 @@
 import { useState } from "react";
 
-const SearchBar = ({ onSearch }: { onSearch: (query: string) => void }) => {
+interface SearchBarProp {
+  onSearch: (query: string) => void
+}
+
+const SearchBar = ({ onSearch }:SearchBarProp ) => {
   const [query, setQuery] = useState("");
 
   const handleSearch = () => {
-    if (query.trim() !== "") {
-      onSearch(query);
-    }
+      onSearch(query.trim());
   };
 
   return (
