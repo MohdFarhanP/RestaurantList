@@ -12,8 +12,17 @@ export class UpdateRestaurantUseCase implements IUseCase<UpdateRestaurantInput, 
 
     }
     public async execute(restaurant: UpdateRestaurantInput): Promise<RestaurantDTO> {
-        const updatedRestaurant = await this.restaurantRepo.update(restaurant);
-        return RestaurantDTO.from(updatedRestaurant);
+        try {
+            const updatedRestaurant = await this.restaurantRepo.update(restaurant);
+            return RestaurantDTO.from(updatedRestaurant);   
+        } catch (error) {
+            if (error instanceof Error) {
+                console.error(error.stack);
+                throw new Error(error.message);
+            } else {
+                throw new Error('An unknown error occurred');
+            }   
+        }
     }
 
 }   

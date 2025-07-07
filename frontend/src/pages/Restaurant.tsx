@@ -12,6 +12,7 @@ import Navbar from "../components/Navbar";
 import ErrorMessages from "../components/ErrorMessages";
 import RestaurantCard from "../components/RestaurantCard";
 import Pagination from "../components/Pagination";
+import { ToastContainer } from "react-toastify";
 
 export interface RestaurantData {
   id?: string;
@@ -135,7 +136,7 @@ const Restaurant = () => {
           No restaurants found. Add one!
         </div>
       )}
-
+      <ToastContainer/>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-6 mt-20">
         {restaurants.map((restaurant) => (
           <RestaurantCard

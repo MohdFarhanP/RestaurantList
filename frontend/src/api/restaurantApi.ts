@@ -1,4 +1,5 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { toast } from 'react-toastify';
 
 interface FetchRestaurantResult{
   data:Restaurant[];
@@ -19,7 +20,7 @@ interface Restaurant {
   images:string[];
 }
 
-const AXIOS_BASE_URL = import.meta.env.VITE_AXIOS_BASEURL;
+const AXIOS_BASE_URL = import.meta.env.VITE_AXIOS_BASE_URL;
 
 
 export const fetchRestaurants = async (page:number,limit = 4): Promise<FetchRestaurantResult> => {
@@ -28,10 +29,13 @@ export const fetchRestaurants = async (page:number,limit = 4): Promise<FetchRest
     console.log('response',response)
     return response.data;
   } catch (error) {
-    if (error instanceof Error) {
-      console.error(error.stack);
-      throw new Error(error.message);
+if (error instanceof AxiosError) {
+      const message = error.response?.data?.msg || error.response?.data?.message || error.message;
+      console.log(message)
+      toast.error(message)
+      throw new Error(message);
     } else {
+      toast.error('An unknown error occurred');
       throw new Error('An unknown error occurred');
     }
   }
@@ -43,11 +47,14 @@ export const addRestaurant = async (restaurant: Omit<Restaurant, 'id'>): Promise
     const response = await axios.post<Restaurant>(`${AXIOS_BASE_URL}/restaurant`, restaurant);
     return response.data;
   } catch (error) {
-    if (error instanceof Error) {
-      console.error(error.stack);
-      throw new Error(error.message);
+if (error instanceof AxiosError) {
+      const message = error.response?.data?.msg || error.response?.data?.message || error.message;
+      console.log(message)
+      toast.error(message)
+      throw new Error(message);
     } else {
-        throw new Error('An unknown error occurred');
+      toast.error('An unknown error occurred');
+      throw new Error('An unknown error occurred');
     }
   }
 };
@@ -58,11 +65,14 @@ export const updateRestaurant = async (restaurant: Restaurant): Promise<Restaura
     const response = await axios.put<Restaurant>(`${AXIOS_BASE_URL}/restaurant/${restaurant.id}`, restaurant);
     return response.data;
   } catch (error) {
-    if (error instanceof Error) {
-        console.error(error.stack);
-        throw new Error(error.message);
+    if (error instanceof AxiosError) {
+      const message = error.response?.data?.msg || error.response?.data?.message || error.message;
+      console.log(message)
+      toast.error(message)
+      throw new Error(message);
     } else {
-        throw new Error('An unknown error occurred');
+      toast.error('An unknown error occurred');
+      throw new Error('An unknown error occurred');
     }
   }
 };
@@ -73,11 +83,14 @@ export const deleteRestaurant = async (id: string): Promise<void> => {
     await axios.delete<void>(`${AXIOS_BASE_URL}/restaurant/${id}`);
     return;
   } catch (error) {
-    if (error instanceof Error) {
-        console.error(error.stack);
-        throw new Error(error.message);
+if (error instanceof AxiosError) {
+      const message = error.response?.data?.msg || error.response?.data?.message || error.message;
+      console.log(message)
+      toast.error(message)
+      throw new Error(message);
     } else {
-        throw new Error('An unknown error occurred');
+      toast.error('An unknown error occurred');
+      throw new Error('An unknown error occurred');
     }
   }
 };
