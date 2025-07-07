@@ -1,9 +1,9 @@
-import axios, { AxiosError } from "axios";
-import { toast } from 'react-toastify';
+import axios from "axios";
+import { safeApiCall } from "../utils/safeApiCall";
 
-interface FetchRestaurantResult{
-  data:Restaurant[];
-  totalPage:number
+interface FetchRestaurantResult {
+  data: Restaurant[];
+  totalPage: number
 }
 interface Restaurant {
   id?: string;
@@ -17,97 +17,57 @@ interface Restaurant {
   state: string;
   pincode: string;
   country: string;
-  images:string[];
+  images: string[];
 }
 
 const AXIOS_BASE_URL = import.meta.env.VITE_AXIOS_BASE_URL;
 console.log(AXIOS_BASE_URL)
 
-export const fetchRestaurants = async (page:number,limit = 4): Promise<FetchRestaurantResult> => {
-  try {
-    const response = await axios.get<FetchRestaurantResult>(`${AXIOS_BASE_URL}/restaurant/fetchRestaurant?page=${page}&limit=${limit}`);
-    console.log('response',response)
-    return response.data;
-  } catch (error) {
-if (error instanceof AxiosError) {
-      const message = error.response?.data?.msg || error.response?.data?.message || error.message;
-      console.log(message)
-      toast.error(message)
-      throw new Error(message);
-    } else {
-      toast.error('An unknown error occurred');
-      throw new Error('An unknown error occurred');
-    }
-  }
-};
-export const searchRestaurant = async (searchQuary:string): Promise<Restaurant[]> => {
-  try {
-    const response = await axios.get<{data:Restaurant[]}>(`${AXIOS_BASE_URL}/restaurant?search=${searchQuary}`);
-    console.log('response',response)
-    return response.data.data;
-  } catch (error) {
-if (error instanceof AxiosError) {
-      const message = error.response?.data?.msg || error.response?.data?.message || error.message;
-      console.log(message)
-      toast.error(message)
-      throw new Error(message);
-    } else {
-      toast.error('An unknown error occurred');
-      throw new Error('An unknown error occurred');
-    }
-  }
-};
+
+export const fetchRestaurants = (page: number, limit = 4) =>
+  safeApiCall(() =>
+    axios
+      .get<FetchRestaurantResult>(
+        `${AXIOS_BASE_URL}/restaurant/fetchRestaurant?page=${page}&limit=${limit}`
+      )
+      .then((res) => res.data)
+  )
 
 
-export const addRestaurant = async (restaurant: Omit<Restaurant, 'id'>): Promise<Restaurant> => {
-  try {
-    const response = await axios.post<Restaurant>(`${AXIOS_BASE_URL}/restaurant/addRestaurant`, restaurant);
-    return response.data;
-  } catch (error) {
-if (error instanceof AxiosError) {
-      const message = error.response?.data?.msg || error.response?.data?.message || error.message;
-      console.log(message)
-      toast.error(message)
-      throw new Error(message);
-    } else {
-      toast.error('An unknown error occurred');
-      throw new Error('An unknown error occurred');
-    }
-  }
-};
+export const searchRestaurant = (searchQuary: string) =>
+  safeApiCall(() =>
+    axios
+      .get<{ data: Restaurant[] }>(
+        `${AXIOS_BASE_URL}/restaurant?search=${searchQuary}`
+      )
+      .then((res) => res.data?.data)
+  )
 
 
-export const updateRestaurant = async (restaurant: Restaurant): Promise<Restaurant> => {
-  try {
-    const response = await axios.put<Restaurant>(`${AXIOS_BASE_URL}/restaurant/updateRestaurant/${restaurant.id}`, restaurant);
-    return response.data;
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      const message = error.response?.data?.msg || error.response?.data?.message || error.message;
-      console.log(message)
-      toast.error(message)
-      throw new Error(message);
-    } else {
-      toast.error('An unknown error occurred');
-      throw new Error('An unknown error occurred');
-    }
-  }
-};
+
+export const addRestaurant = (restaurant: Omit<Restaurant, 'id'>) =>
+  safeApiCall(() =>
+    axios
+      .post<Restaurant>(
+        `${AXIOS_BASE_URL}/restaurant/addRestaurant`, restaurant
+      ).then((res) => res.data)
+  )
 
 
-export const deleteRestaurant = async (id: string): Promise<void> => {
-  try {
-    await axios.delete<void>(`${AXIOS_BASE_URL}/restaurant/deleteRestaurant/${id}`);
-    return;
-  } catch (error) {
-if (error instanceof AxiosError) {
-      const message = error.response?.data?.msg || error.response?.data?.message || error.message;
-      console.log(message)
-      toast.error(message)
-      throw new Error(message);
-    } else {
-      toast.error('An unknown error occurred');
-      throw new Error('An unknown error occurred');
-    }
-  }
-};
+export const updateRestaurant = (restaurant: Restaurant) =>
+  safeApiCall(() =>
+    axios
+      .put<Restaurant>(
+        `${AXIOS_BASE_URL}/restaurant/updateRestaurant/${restaurant.id}`, restaurant
+      )
+      .then((res) => res.data)
+  )
+
+
+export const deleteRestaurant = async (id: string) =>
+  safeApiCall(() =>
+    axios
+      .delete<void>(
+        `${AXIOS_BASE_URL}/restaurant/deleteRestaurant/${id}`
+      )
+  )

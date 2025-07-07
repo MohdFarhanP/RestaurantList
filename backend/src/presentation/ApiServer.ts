@@ -7,24 +7,34 @@ import { restaurantRouter } from './routes/restaurantRoutes';
 import cors from 'cors';
 import dotenv from 'dotenv'
 import { SearchRestaurantController } from './controllers/SearchRestaurantController';
+import rateLimit from "express-rate-limit";
 dotenv.config();
-export class ApiServer{
+export class ApiServer {
 
-    public static async run(port:number,createRestaurantController:CreateRestaurantController,fetchRestaurantController:FetchRestaurantController,updateRestaurantController:UpdateRestaurantController,deleteRestaurantController:DeleteRestaurantController,searchRestaurantController:SearchRestaurantController):Promise<void>{
+    public static async run(port: number, createRestaurantController: CreateRestaurantController, fetchRestaurantController: FetchRestaurantController, updateRestaurantController: UpdateRestaurantController, deleteRestaurantController: DeleteRestaurantController, searchRestaurantController: SearchRestaurantController): Promise<void> {
 
         const app = express();
+        
+        const limiter = rateLimit({
+            windowMs: 60 * 1000,
+            max: 10,
+            message: "Too many requests, try again later."
+        });
+        app.use(limiter);
+
+
         console.log("Allowed CORS origin:", process.env.FRONTEND_URL);
         app.use(cors({
-            origin:process.env.FRONTEND_URL!,
+            origin: process.env.FRONTEND_URL!,
             credentials: true
         }));
         app.use(express.json());
 
-        app.use('/restaurant',restaurantRouter(createRestaurantController,fetchRestaurantController,updateRestaurantController,deleteRestaurantController,searchRestaurantController));
+        app.use('/restaurant', restaurantRouter(createRestaurantController, fetchRestaurantController, updateRestaurantController, deleteRestaurantController, searchRestaurantController));
 
-        app.listen(port,()=>{
+        app.listen(port, () => {
             console.log('server is running');
         })
-    
+
     }
 }
