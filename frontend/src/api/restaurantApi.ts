@@ -21,7 +21,7 @@ interface Restaurant {
 }
 
 const AXIOS_BASE_URL = import.meta.env.VITE_AXIOS_BASE_URL;
-
+console.log(AXIOS_BASE_URL)
 
 export const fetchRestaurants = async (page:number,limit = 4): Promise<FetchRestaurantResult> => {
   try {
