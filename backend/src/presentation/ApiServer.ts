@@ -15,7 +15,7 @@ export class ApiServer{
         const app = express();
         console.log("Allowed CORS origin:", process.env.FRONTEND_URL);
         app.use(cors({
-            origin: [process.env.FRONTENT_URL!,'http://localhost:5173'],
+            origin: [process.env.FRONTEND_URL!,'http://localhost:5173'],
             credentials: true
         }));
         app.use(express.json());
