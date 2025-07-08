@@ -1,5 +1,5 @@
 import axios from "axios";
-const  baseUrl = import.meta.env.VITE_CLOUDINARY_BASE_UR;
+const  baseUrl = import.meta.env.VITE_CLOUDINARY_BASE_URL;
 const upload_preset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESENT;
 const cloud_name = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
 
