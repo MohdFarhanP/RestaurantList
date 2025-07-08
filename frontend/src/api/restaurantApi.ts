@@ -30,7 +30,10 @@ export const fetchRestaurants = (page: number, limit = 4) =>
       .get<FetchRestaurantResult>(
         `${AXIOS_BASE_URL}/restaurant/fetchRestaurant?page=${page}&limit=${limit}`
       )
-      .then((res) => res.data)
+      .then((res) =>{
+        console.log(res);
+        return res.data
+      } )
   )
 
 
