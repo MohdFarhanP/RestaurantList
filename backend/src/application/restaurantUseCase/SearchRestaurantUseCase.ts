@@ -1,23 +1,16 @@
 import { IRepository } from "../../domain/IRepository";
 import { RestaurantDTO } from "../../shared/dtos/RestaurantDTO";
 import { IUseCase } from "../../shared/IUseCase";
+import { BaseUseCase } from "../base/BaseUseCase";
 
-export class SearchRestaurantUseCase implements IUseCase<string, RestaurantDTO[]> {
+export class SearchRestaurantUseCase extends BaseUseCase implements IUseCase<string, RestaurantDTO[]> {
     public constructor(private readonly repo: IRepository) {
-
+        super();
     }
     public async execute(searchQuary: string): Promise<RestaurantDTO[]> {
-        try {
+        return this.executeSafe(async () => {
             const data = await this.repo.search(searchQuary);
-            return data.map((res)=> new RestaurantDTO(res.id,res.name,res.contact,res.email,res.street,res.landmark,res.area,res.city,res.state,res.pincode,res.country,res.images));
-        } catch (error) {
-            if (error instanceof Error) {
-                console.error(error.stack);
-                throw new Error(error.message);
-            } else {
-                throw new Error('An unknown error occurred');
-            }
-        }
-
+            return data.map((res) => new RestaurantDTO(res.id, res.name, res.contact, res.email, res.street, res.landmark, res.area, res.city, res.state, res.pincode, res.country, res.images));
+        });
     }
 }

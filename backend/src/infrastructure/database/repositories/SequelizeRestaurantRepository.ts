@@ -3,16 +3,16 @@ import { UpdateRestaurantInput } from "../../../application/restaurantUseCase/Up
 import { RestaurantEntity } from "../../../domain/RestaurantEntity";
 import { Restaurant } from "../models/restaurant";
 import { Op } from "sequelize";
+import { BaseRepository } from "../../base/BaseRepository";
 
 
-export class SequelizeRestaurantRepository implements IRepository {
+export class SequelizeRestaurantRepository extends BaseRepository implements IRepository {
     public constructor(private readonly model: typeof Restaurant) {
-
+        super();
     }
 
     public async save(data: RestaurantEntity): Promise<RestaurantEntity> {
-        try {
-
+        return this.runSafe(async () => {
             if (!data) throw new Error("Data must be provided");
 
             const existRestorent = await this.model.findOne({ where: { [Op.or]: [{ email: data.email }, { contact: data.contact }] } });
@@ -33,19 +33,11 @@ export class SequelizeRestaurantRepository implements IRepository {
             });
             if (!result) throw new Error("Create failed");
             return new RestaurantEntity(result.name, result.contact, result.email, result.street, result.landmark, result.area, result.city, result.state, result.pincode, result.country, result.images, result.id);
-
-        } catch (error) {
-            if (error instanceof Error) {
-                console.error(error.stack);
-                throw new Error(error.message);
-            } else {
-                throw new Error('An unknown error occurred');
-            }
-        }
+        });
     }
 
     public async fetchByLimit(page: number, limit: number): Promise<FetchByLimitResult> {
-        try {
+        return this.runSafe(async () => {
             const offset = (page - 1) * limit;
             const { count, rows } = await this.model.findAndCountAll({
                 offset,
@@ -53,22 +45,15 @@ export class SequelizeRestaurantRepository implements IRepository {
             });
             const data = rows.map((res) => new RestaurantEntity(res.dataValues.name, res.dataValues.contact, res.dataValues.email, res.dataValues.street, res.dataValues.landmark, res.dataValues.area, res.dataValues.city, res.dataValues.state, res.dataValues.pincode, res.dataValues.country, res.images, res.dataValues.id));
             return { data, total: count }
-        } catch (error) {
-            if (error instanceof Error) {
-                console.error(error.stack);
-                throw new Error(error.message);
-            } else {
-                throw new Error('An unknown error occurred');
-            }
-        }
+        });
     }
 
     public async update(restaurant: UpdateRestaurantInput): Promise<RestaurantEntity> {
-        try {
-            
-            const existRestorent = await this.model.findOne({ where: { [Op.or]: [{ email: restaurant.email }, { contact: restaurant.contact }],id:{[Op.not]:restaurant.id} }});
+        return this.runSafe(async () => {
+
+            const existRestorent = await this.model.findOne({ where: { [Op.or]: [{ email: restaurant.email }, { contact: restaurant.contact }], id: { [Op.not]: restaurant.id } } });
             if (existRestorent) throw new Error('Restaurant with this email or contact already exist');
-            
+
             const [affectedRows] = await this.model.update(restaurant, {
                 where: {
                     id: restaurant.id
@@ -83,48 +68,28 @@ export class SequelizeRestaurantRepository implements IRepository {
             if (!updatedRestaurant) throw new Error('update failed recored not found after update');
 
             return new RestaurantEntity(updatedRestaurant.name, updatedRestaurant.contact, updatedRestaurant.email, updatedRestaurant.street, updatedRestaurant.landmark, updatedRestaurant.area, updatedRestaurant.city, updatedRestaurant.state, updatedRestaurant.pincode, updatedRestaurant.country, updatedRestaurant.images, updatedRestaurant.id);
-        } catch (error) {
-            if (error instanceof Error) {
-                console.error(error.stack);
-                throw new Error(error.message);
-            } else {
-                throw new Error('An unknown error occurred');
-            }
-        }
+        });
     }
 
     public async delete(id: number): Promise<boolean> {
-        try {
+        return this.runSafe(async () => {
             const deleteCount = await this.model.destroy({
                 where: { id }
             });
 
             return deleteCount > 0;
-        } catch (error) {
-            if (error instanceof Error) {
-                console.error(error.stack);
-                throw new Error(error.message);
-            } else {
-                throw new Error('An unknown error occurred');
-            }
-        }
+        })
     }
 
     public async search(searchQuary: string): Promise<RestaurantEntity[]> {
-        try {
+        return this.runSafe(async () => {
+
             const restaurants = await this.model.findAll({
-                where: { name:{[Op.iLike]:`%${searchQuary}%`} }
+                where: { name: { [Op.iLike]: `%${searchQuary}%` } }
             });
 
             return restaurants.map((res) => new RestaurantEntity(res.name, res.contact, res.email, res.street, res.landmark, res.area, res.city, res.state, res.pincode, res.country, res.images, res.id));
-        } catch (error) {
-            if (error instanceof Error) {
-                console.error(error.stack);
-                throw new Error(error.message);
-            } else {
-                throw new Error('An unknown error occurred');
-            }
-        }
+        });
     }
 
 }
