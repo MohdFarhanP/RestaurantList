@@ -24,16 +24,17 @@ const RestaurantCard = ({
       className="bg-white rounded-md shadow-md mt-25 sm:mt-8 transition hover:shadow-lg hover:scale-[1.01] duration-200 w-full max-w-xs mx-auto flex flex-col"
     >
       {/* Card Header " w-full  rounded-t-md"*/}
-      <div className="carousel rounded-box h-40 w-full overflow-x-auto">
-        {restaurant.images.map((img,i)=>
-        <div className="carousel-item" key={i}>
-          <img
-            src={img}
-            className="rounded-box"
-          />
+      {Array.isArray(restaurant.images) && restaurant.images.length > 0 ? (
+        <div className="carousel rounded-box h-40 w-full overflow-x-auto">
+          {restaurant.images.map((img, i) => (
+            <div className="carousel-item" key={i}>
+              <img src={img} className="rounded-box" />
+            </div>
+          ))}
         </div>
-        )}
-      </div>
+      ) : (
+        <p className="text-sm text-gray-400">No images available</p>
+      )}
 
       {/* Card Content */}
       <div className="p-4 flex-1 text-gray-800 text-sm">
@@ -54,10 +55,7 @@ const RestaurantCard = ({
 
       {/* Buttons Row */}
       <div className="flex justify-end gap-2 px-4 pb-4">
-        <button
-          onClick={() => onEdit(restaurant)}
-          className=""
-        >
+        <button onClick={() => onEdit(restaurant)} className="">
           <EditIcon />
         </button>
         <button
