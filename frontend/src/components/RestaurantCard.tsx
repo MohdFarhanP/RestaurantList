@@ -25,8 +25,8 @@ const RestaurantCard = ({
     >
       {/* Card Header " w-full  rounded-t-md"*/}
       <div className="carousel rounded-box h-40 w-full overflow-x-auto">
-        {restaurant.images.map((img)=>
-        <div className="carousel-item">
+        {restaurant.images.map((img,i)=>
+        <div className="carousel-item" key={i}>
           <img
             src={img}
             className="rounded-box"

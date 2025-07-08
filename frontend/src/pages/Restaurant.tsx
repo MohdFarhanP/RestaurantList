@@ -55,9 +55,14 @@ const Restaurant = () => {
   const getRestaurants = async (): Promise<void> => {
     try {
       setLoading(true);
-      const { data, totalPage } = await fetchRestaurants(page);
-      setRestaurants(data);
-      setTotalPages(totalPage);
+      const result = await fetchRestaurants(page);
+        if (result && result.data) {
+      setRestaurants(result.data);
+      setTotalPages(result.totalPage);
+        }else{
+          setRestaurants([]);
+      setTotalPages(1);
+        }
       setError(null);
     } catch (err) {
       console.error("Failed to fetch restaurants:", err);
