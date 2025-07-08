@@ -10,7 +10,7 @@ export class FetchRestaurantController{
             const page = Number(req.query.page);
             const limit = Number(req.query.limit);
             const {data,totalPage} = await this.useCase.execute({page,limit});
-            res.status(200).json({data,totalPage});
+            res.status(200).json({data:data,totalPage});
         
         } catch (error) {
             if (error instanceof Error) {

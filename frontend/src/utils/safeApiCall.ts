@@ -5,5 +5,6 @@ export async function safeApiCall<T>(fn: () => Promise<T>): Promise<T> {
     return await fn();
   } catch (error) {
     handleApiError(error);
+    throw error;
   }
 }

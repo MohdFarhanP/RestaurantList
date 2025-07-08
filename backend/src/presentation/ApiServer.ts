@@ -14,7 +14,7 @@ export class ApiServer {
     public static async run(port: number, createRestaurantController: CreateRestaurantController, fetchRestaurantController: FetchRestaurantController, updateRestaurantController: UpdateRestaurantController, deleteRestaurantController: DeleteRestaurantController, searchRestaurantController: SearchRestaurantController): Promise<void> {
 
         const app = express();
-        
+
         const limiter = rateLimit({
             windowMs: 60 * 1000,
             max: 10,
@@ -29,6 +29,12 @@ export class ApiServer {
             credentials: true
         }));
         app.use(express.json());
+
+        if (process.env.NODE_ENV === 'production') {
+            app.get('/test-response', (req, res) => {
+                res.json({ hello: 'world' });
+            });
+        }
 
         app.use('/restaurant', restaurantRouter(createRestaurantController, fetchRestaurantController, updateRestaurantController, deleteRestaurantController, searchRestaurantController));
 
