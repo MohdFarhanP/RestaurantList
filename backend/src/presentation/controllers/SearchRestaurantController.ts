@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { SearchRestaurantUseCase } from "../../application/restaurantUseCase/SearchRestaurantUseCase";
+import { HttpStatusCode } from "../enum/HttpStatusCode";
 
 export class SearchRestaurantController {
     public constructor(private readonly useCase: SearchRestaurantUseCase) {
@@ -11,12 +12,12 @@ export class SearchRestaurantController {
             const search = req.query.search;
             const restaurants = await this.useCase.execute(search!.toString());
             if (restaurants) {
-                res.status(200).json({ data: restaurants });
+                res.status(HttpStatusCode.OK).json({ data: restaurants });
             }
         } catch (error) {
             if (error instanceof Error) {
                 console.error(error.stack);
-                res.status(500).json({ msg: error.message })
+                res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ msg: error.message })
                 throw new Error(error.message);
             } else {
                 throw new Error('An unknown error occurred');

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { CreateRestaurantUseCase } from "../../application/restaurantUseCase/CreateRestaurantUseCase";
+import { HttpStatusCode } from "../enum/HttpStatusCode";
 
 export class CreateRestaurantController{
     public constructor(private readonly useCase:CreateRestaurantUseCase){
@@ -21,12 +22,12 @@ export class CreateRestaurantController{
                 country:req.body.country,
                 images:req.body.images
             });
-            res.status(201).json(response);
+            res.status(HttpStatusCode.CREATED).json(response);
         
         } catch (error) {
             if (error instanceof Error) {
                 console.error(error.stack);
-                res.status(500).json({msg:error.message})
+                res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({msg:error.message})
                 throw new Error(error.message);
             } else {
                 throw new Error('An unknown error occurred');
